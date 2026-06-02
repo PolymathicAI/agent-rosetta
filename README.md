@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="./assets/agent_rosetta_color_white_bg.svg" width="60%">
+    <img src="./assets/agent_rosetta_color_white_bg.svg" width="40%">
 </p>
 <p align="center" width="100%">
     <a href="https://arxiv.org/pdf/2603.15952">paper</a>
@@ -13,7 +13,7 @@ An LLM agent to execute protein-design tasks with [RosettaScripts](https://docs.
 
 # Code and Data Availability
 
-Code and data are in preparetion for release.
+Code and data are in preparation for release.
 
 # Citation
 
