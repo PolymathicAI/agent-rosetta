@@ -28,6 +28,11 @@ If you find this project useful, please cite:
 }
 ```
 
+# Acknowledgements
+
+We thank Lucy Reading-Ikkanda and Aditya Chhatrala for their contribution to the artwork.
+
+
 # License
 
 This project is licensed under the [MIT License](LICENSE).
