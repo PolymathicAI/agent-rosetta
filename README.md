@@ -2,7 +2,8 @@
     <img src="./assets/agent_rosetta_color_white_bg.svg" width="40%">
 </p>
 <p align="center" width="100%">
-    <a href="https://arxiv.org/pdf/2603.15952">paper</a>
+    <a href="https://arxiv.org/pdf/2603.15952">paper</a> | 
+    <a href="https://polymathic-ai.org/blog/agent-rosetta/">blog</a>
 </p>
 
 An LLM agent to execute protein-design tasks with [RosettaScripts](https://docs.rosettacommons.org/docs/latest/scripting_documentation/RosettaScripts/RosettaScripts).
@@ -10,6 +11,7 @@ An LLM agent to execute protein-design tasks with [RosettaScripts](https://docs.
 # Links
 
 - Paper: [arXiv:2603.15952](https://arxiv.org/pdf/2603.15952)
+- Blog: [Polymathic AI website](https://polymathic-ai.org/blog/agent-rosetta/)
 
 # Code and Data Availability
 
@@ -31,7 +33,6 @@ If you find this project useful, please cite:
 # Acknowledgements
 
 We thank Lucy Reading-Ikkanda and Aditya Chhatrala for their contribution to the artwork.
-
 
 # License
 

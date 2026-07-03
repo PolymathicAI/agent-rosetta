@@ -216,3 +216,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Outputs
+outputs/
+
+# Dev environment
+load_my_modules.sh
+
+# Source
+uv.lock
+cli/
+configs/
+.python-version
+pyproject.toml
+agent_rosetta/
+environments/
+parsers/
+tasks/
+runners/
+assets/pdbs/
