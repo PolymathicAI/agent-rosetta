@@ -226,3 +226,4 @@ load_my_modules.sh
 # Source
 runners/best_of_n.py
 environments/rosetta/tests/
+scripts/

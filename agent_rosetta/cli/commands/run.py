@@ -69,7 +69,7 @@ def run(config_path: Path = None, output_dir: Path = None):
         / now
     )
     workdir.mkdir(parents=True, exist_ok=True)
-    # console.print(f"Working directory: {workdir}", style="grey37")
+    console.print(f"Working directory: {workdir}", style="grey37")
 
     setup_logger(log_dir=workdir / "logs", filename="main.log", level="DEBUG")
     logger.info(f"Running agent {config.model.config.name} on config {config.name}")
