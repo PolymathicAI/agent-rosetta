@@ -1,0 +1,42 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="scoring_post" weights="ref2015">
+            {scoring_weights}
+        </ScoreFunction>
+    </SCOREFXNS>
+
+    <PACKER_PALETTES>
+        <CustomBaseTypePackerPalette name="palette" {additional_residue_types} />
+    </PACKER_PALETTES>
+
+    <RESIDUE_SELECTORS>
+        {residue_selectors}
+    </RESIDUE_SELECTORS>
+
+    <MOVE_MAP_FACTORIES>
+        {movemap_factories}
+    </MOVE_MAP_FACTORIES>
+
+    <SIMPLE_METRICS>
+        {simple_metrics}
+        <SequenceMetric name="record_sequence" output_mode="basename" />
+    </SIMPLE_METRICS>
+
+    <FILTERS>
+        {filters}
+    </FILTERS>
+
+    <MOVERS>
+        {movers}
+        <MinMover name="min" bb="false" chi="true" tolerance="1.0e-07"/>
+    </MOVERS>
+
+    <PROTOCOLS>
+        <Add mover="backbone_change" />
+        <Add mover="min" />
+        {protocols}
+        <Add metrics="record_sequence" />
+    </PROTOCOLS>
+
+    <OUTPUT scorefxn="scoring_post"/>
+</ROSETTASCRIPTS>

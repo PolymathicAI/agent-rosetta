@@ -1,0 +1,20 @@
+name: Pack NCAA
+defaults:
+  - environment: rosetta
+  - model: ${oc.env:AGR_DEFAULT_MODEL,or-sonnet-4.5}
+  - task: pack-ncaa
+  - parser: rosetta
+  - runner: refine
+  - _self_
+
+task:
+  config:
+    mpi_mode: slurm
+    slurm_options:
+      partition: ${oc.env:AGR_SLURM_PARTITION}
+      cpus_per_task: 1
+      ntasks: auto
+      mem: 0
+      time: "01:00:00"
+      job_name: fixed_backbone_sequence_design
+      output: /dev/null

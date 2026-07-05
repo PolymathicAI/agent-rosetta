@@ -1,0 +1,113 @@
+[project]
+name = "agent-rosetta"
+authors = [
+  { name = "Jacopo Teneggi" },
+  { name = "SM Bargeen A Turzo" },
+  { name = "Tanya Marwah" },
+  { name = "Alberto Bietti" },
+  { name = "P Douglas Renfrew" },
+  { name = "Vikram K Mulligan" },
+  { name = "Siavash Golkar" },
+]
+maintainers = [{ name = "Jacopo Teneggi", email = "jtenegg1@jhu.edu" }]
+version = "0.1.0"
+requires-python = ">=3.11.11"
+dependencies = [
+  "biotite>=1.6.0",
+  "click>=8.4.1",
+  "hydra-core>=1.3.2",
+  "litellm>=1.87.1",
+  "loguru>=0.7.3",
+  "lxml>=6.1.1",
+  "numpy>=2.0.2",
+  "pandas>=2.3.3",
+  "paretoset>=1.2.5",
+  "pydantic>=2.13.4",
+  "questionary>=2.1.1",
+  "ray>=2.55.1",
+  "rich>=15.0.0",
+  "tabulate>=0.10.0",
+  "torch>=2.12.0",
+  "torchvision>=0.27.0",
+  "transformers>=5.10.2",
+]
+
+# Pytorch
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu126", marker = "sys_platform == 'linux'" }]
+torchvision = [{ index = "pytorch-cu126", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+# Dependency groups
+[dependency-groups]
+dev = ["pre-commit>=4.6.0", "ruff>=0.15.16"]
+test = ["pytest>=9.0.3"]
+
+# CLI
+[project.scripts]
+agr = "agent_rosetta.cli.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agent_rosetta"]
+
+[tool.hatch.build.targets.editable]
+packages = ["agent_rosetta"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/agent_rosetta", "/pyproject.toml", "/README.md", "/LICENSE"]
+
+[tool.hatch.build]
+exclude = ["**/__pycache__", "**/*.pyc"]
+
+
+# Pytest
+[tool.pytest.ini_options]
+testpaths = ["environments/rosetta/tests"]
+norecursedirs = [".git", "venv", "__pycache__"]
+markers = [
+  "unit: Quick unit tests",
+  "rosetta: Tests that require Rosetta to run",
+  "integration: Tests that require multiple components to work together (e.g., external tools)",
+]
+
+# Ruff
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["agent_rosetta", "cli", "environments", "tasks", "parsers", "runners"]
+respect-gitignore = false
+
+[tool.ruff.lint]
+select = ["I", "TID", "TC", "F", "ANN401", "PTH"]
+
+[tool.ruff.lint.isort]
+section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
+known-first-party = ["agent_rosetta", "environments", "tasks", "parsers"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"typing.Any".msg = "Do not use Any. Prefer object, a TypeVar, a Protocol, or a concrete type."
+"typing_extensions.Any".msg = "Do not use Any. Prefer object, a TypeVar, a Protocol, or a concrete type."
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+runtime-evaluated-base-classes = [
+  "pydantic.BaseModel",
+  "agent_rosetta.typing.EnvironmentState",
+]

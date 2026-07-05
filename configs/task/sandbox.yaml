@@ -1,0 +1,4 @@
+_target_: tasks.sandbox.SandboxTask
+config:
+  _target_: agent_rosetta.task.TaskConfig
+  name: sandbox

@@ -1,0 +1,64 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="r15_regular" weights="ref2015_cst.wts" />
+        <ScoreFunction name="r15_design" weights="ref2015.wts">
+            <Reweight scoretype="aa_composition" weight="1.0" />
+            <Reweight scoretype="atom_pair_constraint" weight="1.0" />
+        </ScoreFunction>
+    </SCOREFXNS>
+
+    <RESIDUE_SELECTORS>
+        <Layer name="core" select_core="true" select_boundary="false" select_surface="false" use_sidechain_neighbors="true" />
+        <Layer name="boundary" select_core="false" select_boundary="true" select_surface="false" use_sidechain_neighbors="true" />
+        <Layer name="surface" select_core="false" select_boundary="false" select_surface="true" use_sidechain_neighbors="true" />
+    </RESIDUE_SELECTORS>
+
+    <RESIDUE_LEVEL_TASK_OPERATIONS>
+        <RestrictToRepackingRLT name="RestrictToRepacking" />
+    </RESIDUE_LEVEL_TASK_OPERATIONS>
+
+    <TASKOPERATIONS>
+        <IncludeCurrent name="include_current_rotamer"/>
+        <ExtraRotamersGeneric name="extra_sample_rotamers_design" ex1="1" ex1aro="1" />
+        <ExtraRotamersGeneric name="extra_sample_rotamers_relax" ex1="1" ex2="1" ex1aro="1" ex2aro="1" />
+
+        <ProhibitSpecifiedBaseResidueTypes name="prohibit_aa_in_core" base_types="ARG,LYS,ASP,GLU,CYS,PRO" selector="core" />
+        <ProhibitSpecifiedBaseResidueTypes name="prohibit_aa_in_boundary" base_types="ARG,LYS,ASP,GLU,CYS,PRO,MET,HIS" selector="boundary" />
+        <ProhibitSpecifiedBaseResidueTypes name="prohibit_aa_in_surface" base_types="ILE,LEU,VAL,PHE,TRP,MET" selector="surface"/>
+    </TASKOPERATIONS>
+
+    <SIMPLE_METRICS>
+        <SequenceMetric name="record_sequence" output_mode="basename" />
+    </SIMPLE_METRICS>
+
+    <MOVERS>
+        <Small name="small_move" scorefxn="r15_regular" temperature="0.5" nmoves="1000" angle_max="2.0" preserve_detailed_balance="0" />
+
+        <FastDesign name="design_all" scorefxn="r15_design" disable_design="false" task_operations="include_current_rotamer,extra_sample_rotamers_design,prohibit_aa_in_core,prohibit_aa_in_boundary,prohibit_aa_in_surface" repeats="4" relaxscript="default" min_type="lbfgs_armijo_nonmonotone" />
+
+        <AddCompositionConstraintMover name="comp_core" filename="{comp_core}" selector="core"/>
+        <AddCompositionConstraintMover name="comp_boundary" filename="{comp_boundary}" selector="boundary"/>
+        <AddCompositionConstraintMover name="comp_surface" filename="{comp_surface}" selector="surface"/>
+
+        <AddConstraints name="geom_constraint">
+            <AtomPairConstraintGenerator name="gen_geom_csts" ca_only="1" use_harmonic="1" native="1" />
+        </AddConstraints>
+        <RemoveConstraints name="rm_geom_csts" constraint_generators="gen_geom_csts" />
+
+        <FastRelax name="fast_relax" scorefxn="r15_regular" disable_design="true" task_operations="include_current_rotamer,extra_sample_rotamers_relax" repeats="3" relaxscript="default" min_type="lbfgs_armijo_nonmonotone" />
+    </MOVERS>
+
+    <PROTOCOLS>
+        <Add mover="geom_constraint" />
+        <Add mover="small_move" />
+        <Add mover="comp_core"/>
+        <Add mover="comp_boundary"/>
+        <Add mover="comp_surface"/>
+        <Add mover="design_all" />
+        <Add mover="rm_geom_csts" />
+        <Add mover="fast_relax" />
+        <Add metrics="record_sequence" />
+    </PROTOCOLS>
+
+    <OUTPUT scorefxn="r15_design" />
+</ROSETTASCRIPTS>

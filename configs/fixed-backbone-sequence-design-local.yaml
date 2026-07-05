@@ -1,0 +1,8 @@
+name: Fixed-backbone sequence design
+defaults:
+  - environment: rosetta
+  - model: ${oc.env:AGR_DEFAULT_MODEL,or-sonnet-4.5}
+  - task: fixed-backbone-sequence-design
+  - parser: rosetta
+  - runner: refine
+  - _self_

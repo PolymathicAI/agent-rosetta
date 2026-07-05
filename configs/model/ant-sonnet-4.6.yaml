@@ -1,0 +1,17 @@
+_target_: agent_rosetta.model.LiteLLMModel
+config:
+  _target_: agent_rosetta.model.LiteLLMModelConfig
+  name: Claude Sonnet 4.6
+  
+  model_name: claude-sonnet-4-6
+
+  context_window: 2
+  max_query_retries: 1
+
+  reasoning_tag: ""
+  reasoning_formatting: ""
+  parse_reasoning: false
+
+  completion_args:
+    max_tokens: 4096
+    reasoning_effort: "medium"

@@ -1,0 +1,17 @@
+_target_: agent_rosetta.model.LiteLLMModel
+config:
+  _target_: agent_rosetta.model.LiteLLMModelConfig
+  name: GPT-5 mini
+  
+  model_name: gpt-5-mini
+
+  context_window: 2
+  max_query_retries: 1
+
+  reasoning_tag: ""
+  reasoning_formatting: ""
+  parse_reasoning: false
+
+  completion_args:
+    max_tokens: 4096
+    reasoning_effort: "medium"

@@ -1,0 +1,19 @@
+_target_: parsers.rosetta.parser.RosettaParser
+config:
+  _target_: parsers.rosetta.parser.RosettaParserConfig
+  name: rosetta
+  max_parse_retries: 1
+  parsing_error_template: |
+    There was an error while parsing your response:
+
+    {error}
+
+    ---
+
+    **Instructions:**
+
+    1. Carefully read the error message.
+    2. Think about the possible causes of the error and come up with a solution.
+    3. Fix the error in the content of the message without changing its meaning
+
+    Follow the format specified in the system prompt.

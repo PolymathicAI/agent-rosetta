@@ -1,0 +1,45 @@
+<!-- The following needs to be commented out for a run, but uncommented to get tab completion
+# and mouse-over help in VSCode: -->
+
+<!-- <root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="rosettascripts.xsd" /> -->
+
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="scoring_relax" weights="ref2015" />
+        <ScoreFunction name="scoring_post" weights="ref2015">
+            {scoring_weights}
+        </ScoreFunction>
+    </SCOREFXNS>
+
+    <PACKER_PALETTES>
+    </PACKER_PALETTES>
+
+    <RESIDUE_SELECTORS>
+    </RESIDUE_SELECTORS>
+
+    <TASKOPERATIONS>
+    </TASKOPERATIONS>
+
+    <SIMPLE_METRICS>
+        {simple_metrics}
+        <SequenceMetric name="record_sequence" output_mode="basename" />
+    </SIMPLE_METRICS>
+
+    <FILTERS>
+        {filters}
+    </FILTERS>
+
+    <MOVERS>
+        <SimpleThreadingMover name="thread_sequence" start_position="{start_position}" thread_sequence="{sequence}" />
+        <FastRelax name="relax" scorefxn="scoring_relax" />
+    </MOVERS>
+
+    <PROTOCOLS>
+        <Add mover="thread_sequence" />
+        <Add mover="relax" />
+        {protocol}
+        <Add metrics="record_sequence" />
+    </PROTOCOLS>
+
+    <OUTPUT scorefxn="scoring_post" />
+</ROSETTASCRIPTS>

@@ -1,0 +1,43 @@
+_target_: tasks.rosetta.fixed_backbone_sequence_design.FixedBackboneSequenceDesignTask
+config:
+  _target_: tasks.rosetta.task.RosettaTaskConfig
+  name: fixed-backbone-sequence-design
+
+  prompt: |
+    You are given an initial backbone conformation composed of glycine residues only.
+
+    Your task is to design (i.e., change) the residues of the sequence such that:
+    1. It is energetically stable according to biophysical principles.
+    2. It has low Rosetta energy.
+    3. The sequence folds into the same shape as the initial backbone structure.
+
+    You will be provided the following proxy metrics to help you assess task progress:
+    1. Total Rosetta energy.
+    2. The RMSD between the ESMFold predicted fold and the initial backbone conformation.
+    3. The uncertainty (i.e., average pLDDT) of the ESMFold prediction.
+
+    At each step:
+    - The Rosetta environment will execute your action and produce an ensemble of candidate designs.
+    - You will be shown summary statistics of the ensemble.
+    - You will choose the next action to take, which will be applied to Pareto optimal candidates only in terms of the provided proxy metrics.
+
+  initial_pdb: ${oc.env:AGR_PDB_DIR/9PL1_gly.pdb,./assets/pdbs/9PL1_gly.pdb}
+
+  nstruct: 128
+  use_mpi: true
+  mpi_mode: local
+
+  guidance_weights:
+    aa_composition: 1.0
+    atom_pair_constraint: 1.0
+
+  metrics:
+    - radius_of_gyration
+    - cavity_volume
+    - buns
+    - res_fa_rep
+    - res_rama_prepro
+
+  tools:
+    - esmfold
+  use_ray: false

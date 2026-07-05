@@ -1,0 +1,4 @@
+_target_: runners.refine.RefineRunner
+config:
+  name: refine
+  max_steps: 20

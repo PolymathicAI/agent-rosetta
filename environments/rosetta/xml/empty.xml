@@ -1,0 +1,12 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="scoring" weights="ref2015" />
+    </SCOREFXNS>
+
+    {content}
+
+    <PROTOCOLS>
+    </PROTOCOLS>
+
+    <OUTPUT scorefxn="scoring" />
+</ROSETTASCRIPTS>

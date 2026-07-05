@@ -1,0 +1,48 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="scoring_pre" weights="ref2015">
+            <Reweight scoretype="aa_composition" weight="1.0" />
+        </ScoreFunction>
+        <ScoreFunction name="guidance" weights="ref2015">
+            {guidance_weights}
+        </ScoreFunction>
+        <ScoreFunction name="scoring_post" weights="ref2015">
+            {scoring_weights}
+        </ScoreFunction>
+    </SCOREFXNS>
+
+    <PACKER_PALETTES>
+        <CustomBaseTypePackerPalette name="design_palette" {additional_residue_types} />
+    </PACKER_PALETTES>
+
+    <RESIDUE_SELECTORS>
+        {residue_selectors}
+    </RESIDUE_SELECTORS>
+
+    <TASKOPERATIONS>
+        {task_operations}
+        <IncludeCurrent name="include_current" />
+    </TASKOPERATIONS>
+
+    <SIMPLE_METRICS>
+        {simple_metrics}
+        <TotalEnergyMetric name="aa_composition_pre" scorefxn="scoring_pre" scoretype="aa_composition"/>
+        <SequenceMetric name="record_sequence" output_mode="basename" />
+    </SIMPLE_METRICS>
+
+    <FILTERS>
+        {filters}
+    </FILTERS>
+
+    <MOVERS>
+        {movers}
+        <FastDesign name="design" scorefxn="guidance" repeats="1" packer_palette="design_palette" task_operations="{task_operations_names}" />
+    </MOVERS>
+
+    <PROTOCOLS>
+        {protocols}
+        <Add metrics="record_sequence" />
+    </PROTOCOLS>
+
+    <OUTPUT scorefxn="scoring_post"/>
+</ROSETTASCRIPTS>

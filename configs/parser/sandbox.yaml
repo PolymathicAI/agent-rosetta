@@ -1,0 +1,6 @@
+_target_: parsers.sandbox.SandboxParser
+config:
+  _target_: agent_rosetta.parser.ParserConfig
+  name: sandbox
+  max_parse_retries: 0
+  parsing_error_template:

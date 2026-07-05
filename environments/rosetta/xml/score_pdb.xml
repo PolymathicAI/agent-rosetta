@@ -1,0 +1,40 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="scoring_relax" weights="ref2015" />
+        <ScoreFunction name="scoring_post" weights="ref2015">
+            {scoring_weights}
+        </ScoreFunction>
+    </SCOREFXNS>
+
+    <PACKER_PALETTES>
+        <CustomBaseTypePackerPalette name="scoring_palette" {additional_residue_types} />
+    </PACKER_PALETTES>
+
+    <RESIDUE_SELECTORS>
+        {residue_selectors}
+    </RESIDUE_SELECTORS>
+
+    <SIMPLE_METRICS>
+        {simple_metrics}
+        <SequenceMetric name="record_sequence" output_mode="basename" />
+    </SIMPLE_METRICS>
+
+    <FILTERS>
+        {filters}
+    </FILTERS>
+
+    <MOVERS>
+        {movers}
+        <FastRelax name="relax" scorefxn="scoring_relax" packer_palette="scoring_palette" >
+            <MoveMap name="relax_movemap" {relax_movemap_params} >
+            </MoveMap>
+        </FastRelax>
+    </MOVERS>
+
+    <PROTOCOLS>
+        {protocols}
+        <Add metrics="record_sequence" />
+    </PROTOCOLS>
+
+    <OUTPUT scorefxn="scoring_post"/>
+</ROSETTASCRIPTS>

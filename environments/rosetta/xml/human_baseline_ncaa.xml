@@ -1,0 +1,79 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="r15_regular" weights="ref2015_cst.wts"/>
+        <ScoreFunction name="r15_design" weights="ref2015.wts">
+            <Reweight scoretype="aa_composition" weight="1.0"/>
+            <Reweight scoretype="atom_pair_constraint" weight="1.0"/>
+        </ScoreFunction>
+        <ScoreFunction name="r15_post" weights="ref2015_cst.wts">
+            <Reweight scoretype="aa_composition" weight="1.0"/>
+            <Reweight scoretype="atom_pair_constraint" weight="1.0"/>
+            <Reweight scoretype="rg" weight="1.0" />
+            <Reweight scoretype="buried_unsatisfied_penalty" weight="1.0" />
+        </ScoreFunction>
+    </SCOREFXNS>
+
+    <PACKER_PALETTES>
+        <CustomBaseTypePackerPalette name="ncaa_palette" additional_residue_types="TRF"/>
+    </PACKER_PALETTES>
+
+    <RESIDUE_SELECTORS>
+        <Layer name="core" select_core="true" select_boundary="false" select_surface="false" use_sidechain_neighbors="true"/>
+    </RESIDUE_SELECTORS>
+
+    <RESIDUE_LEVEL_TASK_OPERATIONS>
+        <RestrictToRepackingRLT name="RestrictToRepacking"/>
+    </RESIDUE_LEVEL_TASK_OPERATIONS>
+
+    <TASKOPERATIONS>
+        <IncludeCurrent name="include_current_rotamer"/>
+        <ExtraRotamersGeneric name="extra_sample_rotamers_design" ex1="1" ex1aro="1"/>
+        <ExtraRotamersGeneric name="extra_sample_rotamers_relax" ex1="1" ex2="1" ex1aro="1" ex2aro="1"/>
+
+        <DesignRestrictions name="not_core">
+            <Action selector_logic="NOT core" residue_level_operations="RestrictToRepacking"/>
+        </DesignRestrictions>
+        
+        <ProhibitSpecifiedBaseResidueTypes name="limited_aa_design" base_types="ARG,LYS,ASP,GLU,CYS,PRO"/>
+    </TASKOPERATIONS>
+
+    <SIMPLE_METRICS>
+        <SelectedResiduesMetric name="core_residues" residue_selector="core" rosetta_numbering="false" />
+        <SequenceMetric name="record_sequence" output_mode="basename"/>
+    </SIMPLE_METRICS>
+
+    <FILTERS>
+        <CavityVolume name="cav_vol" confidence="0.0" />
+    </FILTERS>
+
+    <MOVERS>
+        <Small name="small_move" scorefxn="r15_design" temperature="0.5" nmoves="1000" angle_max="2.0" preserve_detailed_balance="0"/>
+
+        <FastDesign name="design_with_ncaa_only" scorefxn="r15_design" disable_design="false" task_operations="not_core,limited_aa_design,include_current_rotamer,extra_sample_rotamers_design" packer_palette="ncaa_palette" repeats="5" relaxscript="default" min_type="lbfgs_armijo_nonmonotone"/>
+
+        <AddCompositionConstraintMover name="comp_ncaa" filename="{comp_ncaa}" selector="core"/>
+        <AddCompositionConstraintMover name="comp_core" filename="{comp_core}" selector="core"/>
+
+        <AddConstraints name="geom_constraint">
+            <AtomPairConstraintGenerator name="gen_geom_csts" ca_only="1" use_harmonic="1" native="1"/>
+        </AddConstraints>
+        <RemoveConstraints name="rm_geom_csts" constraint_generators="gen_geom_csts"/>
+
+        <FastRelax name="fast_relax" scorefxn="r15_regular" disable_design="true" task_operations="include_current_rotamer,extra_sample_rotamers_relax" repeats="3" relaxscript="default" min_type="lbfgs_armijo_nonmonotone"/>
+    </MOVERS>
+
+    <PROTOCOLS>
+        <Add mover="geom_constraint"/>
+        <Add mover="small_move"/>
+        <Add mover="comp_ncaa"/>
+        <Add mover="comp_core"/>
+        <Add mover="design_with_ncaa_only"/>
+        <Add mover="rm_geom_csts"/>
+        <Add mover="fast_relax"/>
+        <Add metrics="core_residues" />
+        <Add filter="cav_vol"/>
+        <Add metrics="record_sequence"/>
+    </PROTOCOLS>
+
+    <OUTPUT scorefxn="r15_post"/>
+</ROSETTASCRIPTS>

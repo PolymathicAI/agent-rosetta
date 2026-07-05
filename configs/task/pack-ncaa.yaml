@@ -1,0 +1,53 @@
+_target_: tasks.rosetta.pack_ncaa.PackNCAATask
+config:
+  _target_: tasks.rosetta.task.RosettaTaskConfig
+  name: pack-ncaa
+
+  prompt: |
+    You are given an initial protein composed of standard (i.e., canonical) amino acids.
+
+    Your task is to redesign the sequence such that:
+    1. It includes exactly one (1) non-canonical amino acid in its core.
+    2. The inclusion of the non-canonical amino acid does not compromise the energetic stability of the protein.
+    3. The sequence folds into the same shape as the initial protein.
+
+    The non-canonical amino acid (NCAA) to include is {ncaa_name}, a {ncaa_description}. The 3-letter code for this NCAA is {ncaa_code3}.
+
+    You will be provided the following proxy metrics to help you assess task progress:
+    1. Total Rosetta energy.
+    2. Cavity volume and radius of gyration.
+    3. The RMSD between the Rosetta design and the initial protein.
+
+    At each step:
+    - The Rosetta environment will execute your action and produce an ensemble of candidate designs.
+    - You will be shown summary statistics of the ensemble.
+    - You will choose the next action to take, which will be applied to Pareto optimal candidates only in terms of the provided proxy metrics.
+  
+  initial_pdb: ${oc.env:AGR_PDB_DIR/pdbs/6V67.pdb,./assets/pdbs/6V67.pdb}
+
+  nstruct: 128
+  use_mpi: true
+  mpi_mode: local
+  
+  guidance_weights:
+    aa_composition: 1.0
+    atom_pair_constraint: 1.0
+
+  metrics:
+    - radius_of_gyration
+    - cavity_volume
+    - buns
+    - res_fa_rep
+    - res_rama_prepro
+    - core_residues
+
+  relax_pre_score: true
+  relax_movemap_params:
+    bb: 0
+    chi: 1
+
+  use_ncaas: true
+  ncaas:
+    - name: N1-formyl-tryptophan
+      code3: TRF
+      description: tryptophan with a formyl group attached to the nitrogen in the indole ring

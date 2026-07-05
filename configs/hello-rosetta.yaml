@@ -1,0 +1,17 @@
+name: Hello Rosetta
+defaults:
+  - environment: sandbox
+  - model: ${oc.env:AGR_DEFAULT_MODEL,or-sonnet-4.5}
+  - task: sandbox
+  - parser: sandbox
+  - runner: refine
+  - _self_
+
+runner:
+  config:
+    max_steps: 1
+
+task:
+  config:
+    name: Hello Rosetta
+    prompt: Hello! Who are you, and what can you help me design?
