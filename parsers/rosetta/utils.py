@@ -5,6 +5,7 @@ from environments.rosetta.constants.aa import AA_1TO3
 
 
 def normalize(restype: str) -> str:
+    restype = restype.strip().upper()
     if len(restype) == 3:
         return restype
 
