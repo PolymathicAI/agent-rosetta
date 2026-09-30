@@ -19,6 +19,5 @@ AA_3TO1: dict[str, str] = {
     "VAL": "V",
     "TRP": "W",
     "TYR": "Y",
-    "HIS_D": "H",
 }
 AA_1TO3: dict[str, str] = {v: k for k, v in AA_3TO1.items()}

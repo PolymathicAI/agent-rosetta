@@ -21,7 +21,7 @@ config:
     - You will be shown summary statistics of the ensemble.
     - You will choose the next action to take, which will be applied to Pareto optimal candidates only in terms of the provided proxy metrics.
 
-  initial_pdb: ${oc.env:AGR_PDB_DIR/9PL1_gly.pdb,./assets/pdbs/9PL1_gly.pdb}
+  initial_pdb: ${oc.env:AGR_PDB_DIR,./assets/pdbs}/9PL1_gly.pdb
 
   nstruct: 128
   use_mpi: true

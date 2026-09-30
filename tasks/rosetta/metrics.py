@@ -47,13 +47,30 @@ def core_residues() -> TaskMetricConfig:
     core_residues_selector = f"""
         <Layer name="{selector_name}" select_core="true" select_boundary="false" select_surface="false"/>
     """
-    core_residues_metric = f"""<SelectedResiduesMetric name="core_residues" residue_selector="{selector_name}" rosetta_numbering="false" />"""
+    core_residues_metric = f"""<SelectedResiduesMetric name="{metric_name}" residue_selector="{selector_name}" rosetta_numbering="false" />"""
     core_residues_protocol = f"""<Add metrics="{metric_name}" />"""
 
     return TaskMetricConfig(
         residue_selectors=core_residues_selector,
         simple_metrics=core_residues_metric,
         protocols=core_residues_protocol,
+    )
+
+
+def cro_residues() -> TaskMetricConfig:
+    metric_name = "cro_residues"
+    selector_name = f"__{metric_name}"
+
+    cro_residues_selector = f"""
+        <ResidueName name="{selector_name}" residue_names="CRO"/>
+    """
+    cro_residues_metric = f"""<SelectedResiduesMetric name="{metric_name}" residue_selector="{selector_name}" rosetta_numbering="true" />"""
+    cro_residues_protocol = f"""<Add metrics="{metric_name}" />"""
+
+    return TaskMetricConfig(
+        residue_selectors=cro_residues_selector,
+        simple_metrics=cro_residues_metric,
+        protocols=cro_residues_protocol,
     )
 
 
@@ -64,6 +81,7 @@ metric_fn_map: dict[Metric, TaskMetric] = {
     "res_fa_rep": functools.partial(per_residue_energy, "fa_rep"),
     "res_rama_prepro": functools.partial(per_residue_energy, "rama_prepro"),
     "core_residues": core_residues,
+    "cro_residues": cro_residues,
 }
 
 

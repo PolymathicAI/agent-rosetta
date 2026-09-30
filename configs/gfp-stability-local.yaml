@@ -1,0 +1,8 @@
+name: GFP stability
+defaults:
+  - environment: rosetta
+  - model: ${oc.env:AGR_DEFAULT_MODEL,or-qwen3-235b}
+  - task: gfp-stability
+  - parser: rosetta
+  - runner: refine
+  - _self_

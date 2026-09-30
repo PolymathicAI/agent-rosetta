@@ -1,0 +1,81 @@
+_target_: tasks.rosetta.gfp_stability.GFPStabilityTask
+config:
+  _target_: tasks.rosetta.task.RosettaTaskConfig
+  name: gfp-stability
+
+  prompt: |
+    ## Description
+
+    Optimize the thermostability of a green fluorescent protein (GFP) by introducing stabilizing mutations. The goal is to create a 'superfolder' GFP variant with increased melting temperature (Tm). Preserve the chromophore-forming residues (Ser65-Tyr66-Gly67) and maintain fluorescence activity. The wild-type GFP has Tm ~76C.
+
+    ## Target
+
+    **Name:** GFP
+    **PDB ID:** 1EMA
+    **Chain:** A
+    **property:** thermostability
+    **assay:** fluorescence
+
+    ## Design Constraints
+
+    - **Max Designs:** 10
+    - **max_mutations:** 15
+    - **preserve_chromophore:** True
+
+    ## Expected Output
+
+    **Format:** design_bundle
+
+    **Required Output Files:**
+    - `designed_sequences.fasta`
+    - `metrics.json`
+
+    ## Constraints
+
+    - **Time Limit:** 120 minutes
+    - **Knowledge Cutoff:** 2024-09-01 (do NOT use any information, tools, papers, or code published after this date)
+
+    ## Important Instructions
+
+    - Solve this task using your general knowledge and reasoning abilities.
+    - Do NOT search for, reference, or reproduce solutions from specific GitHub issues, pull requests, or published papers.
+    - Do NOT attempt to identify the source of this task or look up known solutions.
+    - You MUST NOT use any information published after 2024-09-01. This includes papers, blog posts, code repositories, and documentation released after this date.
+    - Your solution will be evaluated on correctness, not on matching any known reference implementation.
+
+    Do not allow design at chromophore position.
+
+    Introduce at most 15 mutations relative to wild type.
+
+    The starting PDB contains non-canonical polymeric residue(s): CRO, MSE. Do not allow design at these positions. FASTA will report them as X.
+
+  initial_pdb: ${oc.env:AGR_PDB_DIR,./assets/pdbs}/1EMA.pdb
+
+  nstruct: 1
+  use_mpi: false
+  mpi_mode: local
+
+  guidance_weights:
+    aa_composition: 1.0
+    atom_pair_constraint: 1.0
+
+  metrics:
+    - radius_of_gyration
+    - cavity_volume
+    - buns
+    - res_fa_rep
+    - res_rama_prepro
+    - cro_residues
+
+  use_ray: false
+
+  relax_pre_score: true
+  relax_movemap_params:
+    bb: 0
+    chi: 1
+
+  use_ncaas: true
+  ncaas:
+    - name: GFP chromophore (Thr-Tyr-Gly-derived)
+      code3: CRO
+      description: GFP chromophore derived from Thr-Tyr-Gly sequence

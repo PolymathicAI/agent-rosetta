@@ -1,16 +1,17 @@
-name: Qwen3 235B Instruct (OpenRouter)
-model:
-  _target_: agent_rosetta.model.LiteLLMModel
-  config:
-    model_name: openrouter/qwen/qwen3-235b-a22b-2507
+_target_: agent_rosetta.model.LiteLLMModel
+config:
+  _target_: agent_rosetta.model.LiteLLMModelConfig
+  name: Qwen3 235B Instruct (OpenRouter)
 
-    context_window: 2
-    max_query_retries: 1
+  model_name: openrouter/qwen/qwen3-235b-a22b-2507
 
-    reasoning_tag: reasoning
-    reasoning_formatting: Write your step-by-step reasoning inside <reasoning></reasoning> tags.
-    parse_reasoning: true
+  context_window: 2
+  max_query_retries: 1
 
-    completion_args:
-      max_tokens: 4096
-      temperature: 0.7
+  reasoning_tag: reasoning
+  reasoning_formatting: Write your step-by-step reasoning inside <reasoning></reasoning> tags.
+  parse_reasoning: true
+
+  completion_args:
+    max_tokens: 4096
+    temperature: 0.7

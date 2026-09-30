@@ -21,6 +21,8 @@ metric_name_map: dict[str, str] = {
     "buried_unsatisfied_penalty": "Buried unsatisfied Hydrogen bonds penalty",
     "esmfold_rmsd_to_init": "ESMFold RMSD to init (Å)",
     "esmfold_ca_plddt": "ESMFold CA pLDDT",
+    "rmsd_to_init": "RMSD to init (Å)",
+    "cro_residues": "CRO residue positions",
 }
 
 

@@ -16,6 +16,7 @@ from .utils.rmsd import measure_rmsd
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from tasks.rosetta.gfp_stability import GFPStabilityTask
     from tasks.rosetta.pack_ncaa import PackNCAATask
     from tasks.rosetta.task import RosettaTask
 
@@ -167,7 +168,32 @@ def pack_ncaa_reward(
     return designs
 
 
+def gfp_stability_reward(
+    designs: list[RosettaDesign] = None,
+    env: RosettaEnvironment = None,
+    task: GFPStabilityTask = None,
+) -> list[RosettaDesign]:
+    for design in designs:
+        design.reward["total_score"] = design.get_total_energy()
+        design.reward["cav_vol"] = design.score_dict.get("cav_vol", np.nan)
+        design.reward["rg"] = design.score_dict.get("rg", np.nan)
+
+        cro_residues = design.score_dict.get("cro_residues", "")
+        if cro_residues == "":
+            cro_residues = None
+        else:
+            cro_residues = cro_residues.split(",")
+            cro_residues = list(map(lambda r: int(r), cro_residues))
+        design.reward["cro_residues"] = cro_residues
+
+    designs = get_rmsd_to_init(designs=designs, ref_pdb=env.ref_pdb)
+    for design in designs:
+        design.is_pareto_efficient = True
+    return designs
+
+
 task_reward_map: dict[str, RosettaRewardFunction] = {
     "fixed-backbone-sequence-design": fixed_backbone_sequence_design_reward,
     "pack-ncaa": pack_ncaa_reward,
+    "gfp-stability": gfp_stability_reward,
 }
