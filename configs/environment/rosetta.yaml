@@ -44,7 +44,7 @@ config:
     Rules:
     - Use <action tag="choose"></action> to CHOOSE the action.
     - Use <action tag="run"></action> to RUN the action.
-    - Use <action_name>action_name</action_name> to specify the name of the action.
+    - Use <name>action_name</name> to specify the name of the action.
     - For each argument of the action, use XML tags with the name and value of the argument.
     - Write one (1) action call per response only. The environment will only parse the first <action></action> block.
     - Do not include any reasoning or comments in your action call. Write valid action content only.  

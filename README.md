@@ -34,12 +34,12 @@ This task will instruct Agent Rosetta to explain its capabilities:
 First, setup the paths to the `cxx11` and `mpi` version of RosettaScripts ([RosettaScripts build instructions](https://docs.rosettacommons.org/docs/latest/build_documentation/Build-Documentation)):
 
 ```bash
-> agr setup rosetta
+> agr setup-rosetta
 ```
 
 This repo contains configuration files for the tasks presented in our paper:
 
-* `configs/fixed-backbone-sequence-designs-{local/slurm}.yaml` for fixed backbone sequence design with canonical amino acids only (requires a GPU to run ESMFold).
+* `configs/fixed-backbone-sequence-design-{local/slurm}.yaml` for fixed backbone sequence design with canonical amino acids only (requires a GPU to run ESMFold).
 * `configs/pack-ncaa-{local/slurm}.yaml` for packing TRF in the core of a protein (does not require a GPU).
 
 Both tasks use the `mpi` version of RosettaScripts to generate ensembles of 128 candidate designs at each step:
