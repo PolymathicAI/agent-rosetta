@@ -289,7 +289,7 @@ def summarize_ncaa_inclusion(
 
 def get_comp_penalty(designs: list[RosettaDesign]) -> str:
     comp_penalty_template = textwrap.dedent("""
-        - Average compositional before design {pre_comp_mu:.2f}, and after design {comp_mu:.2f} ({comp_delta:+.2f})
+        - Average compositional penalty before design {pre_comp_mu:.2f}, and after design {comp_mu:.2f} ({comp_delta:+.2f})
         """)
 
     pre_comp_mu, _ = summarize_metric(designs=designs, metric="aa_composition_pre")
