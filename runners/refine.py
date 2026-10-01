@@ -22,8 +22,6 @@ class RefineRunner(Runner[RunnerConfig]):
             step = self.agent.run_step(
                 task=self.task, env=self.env, traj=self.trajectory
             )
-            self.trajectory.add(step)
-
             if isinstance(step, StopStep):
                 console.print(
                     ":heavy_exclamation_mark: Stop signal received, terminating run",
@@ -31,6 +29,7 @@ class RefineRunner(Runner[RunnerConfig]):
                 )
                 logger.error("StopStep received, terminating run")
                 break
+            self.trajectory.add(step)
             console.print(
                 f":heavy_check_mark: Step {step_number} completed",
                 style="grey37",

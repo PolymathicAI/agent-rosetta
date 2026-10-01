@@ -27,7 +27,6 @@ if TYPE_CHECKING:
 
 class GFPStabilityTask(RosettaTask):
     structural_metrics = [
-        "cro_residues",
         "cav_vol",
         "rg",
         "buried_unsatisfied_penalty",

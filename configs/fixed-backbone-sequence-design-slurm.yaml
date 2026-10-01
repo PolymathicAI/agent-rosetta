@@ -16,5 +16,5 @@ task:
       ntasks: auto
       mem: 0
       time: "01:00:00"
-      job_name: fixed_backbone_sequence_design
+      job_name: fixed-backbone-sequence-design
       output: /dev/null

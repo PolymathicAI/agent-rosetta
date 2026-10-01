@@ -1,20 +1,22 @@
-name: Pack NCAA
+name: GFP stability
 defaults:
   - environment: rosetta
-  - model: ${oc.env:AGR_DEFAULT_MODEL,or-sonnet-4.5}
-  - task: pack-ncaa
+  - model: ${oc.env:AGR_DEFAULT_MODEL,or-qwen3-235b}
+  - task: gfp-stability
   - parser: rosetta
   - runner: refine
   - _self_
 
 task:
   config:
+    use_mpi: true
     mpi_mode: slurm
+    
     slurm_options:
       partition: ${oc.env:AGR_SLURM_PARTITION}
       cpus_per_task: 1
       ntasks: auto
       mem: 0
       time: "01:00:00"
-      job_name: pack-ncaa
+      job_name: gfp-stability
       output: /dev/null

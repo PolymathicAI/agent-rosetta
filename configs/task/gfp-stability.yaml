@@ -4,54 +4,27 @@ config:
   name: gfp-stability
 
   prompt: |
-    ## Description
+    You are given an initial GFP protein (1EMA).
 
-    Optimize the thermostability of a green fluorescent protein (GFP) by introducing stabilizing mutations. The goal is to create a 'superfolder' GFP variant with increased melting temperature (Tm). Preserve the chromophore-forming residues (Ser65-Tyr66-Gly67) and maintain fluorescence activity. The wild-type GFP has Tm ~76C.
+    Your task is to design the sequence such that it will create a 'superfolder' GFP variant with increased melting temperature. The input GFP protein has a Tm of ~75C.
+    
+    You should leave the CRO residue in position 64 unchanged. Do not delete it, move it, or introduce other CRO residues in the protein sequence.
 
-    ## Target
+    The total number of mutations should be small, not exceeding 15, but this will not be enforced during design.
 
-    **Name:** GFP
-    **PDB ID:** 1EMA
-    **Chain:** A
-    **property:** thermostability
-    **assay:** fluorescence
+    You will be provided the following proxy metrics to help you assess progess:
+    1. Total Rosetta energy.
+    2. Cavity volume and radius of gyration.
+    3. The RMSD between the Rosetta design and the initial protein structure.
 
-    ## Design Constraints
-
-    - **Max Designs:** 10
-    - **max_mutations:** 15
-    - **preserve_chromophore:** True
-
-    ## Expected Output
-
-    **Format:** design_bundle
-
-    **Required Output Files:**
-    - `designed_sequences.fasta`
-    - `metrics.json`
-
-    ## Constraints
-
-    - **Time Limit:** 120 minutes
-    - **Knowledge Cutoff:** 2024-09-01 (do NOT use any information, tools, papers, or code published after this date)
-
-    ## Important Instructions
-
-    - Solve this task using your general knowledge and reasoning abilities.
-    - Do NOT search for, reference, or reproduce solutions from specific GitHub issues, pull requests, or published papers.
-    - Do NOT attempt to identify the source of this task or look up known solutions.
-    - You MUST NOT use any information published after 2024-09-01. This includes papers, blog posts, code repositories, and documentation released after this date.
-    - Your solution will be evaluated on correctness, not on matching any known reference implementation.
-
-    Do not allow design at chromophore position.
-
-    Introduce at most 15 mutations relative to wild type.
-
-    The starting PDB contains non-canonical polymeric residue(s): CRO, MSE. Do not allow design at these positions. FASTA will report them as X.
+    At each step:
+    - The Rosetta environment will execute your action and produce an ensemble of candidate designs.
+    - You will be shown summary statistics of the ensemble.
+    - You will choose the next action to take, which will be only applied to Pareto optimal candidates in terms of the provided proxy metrics.
 
   initial_pdb: ${oc.env:AGR_PDB_DIR,./assets/pdbs}/1EMA.pdb
 
-  nstruct: 1
+  nstruct: 4
   use_mpi: false
   mpi_mode: local
 
@@ -65,7 +38,6 @@ config:
     - buns
     - res_fa_rep
     - res_rama_prepro
-    - cro_residues
 
   use_ray: false
 

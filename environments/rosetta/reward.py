@@ -178,17 +178,17 @@ def gfp_stability_reward(
         design.reward["cav_vol"] = design.score_dict.get("cav_vol", np.nan)
         design.reward["rg"] = design.score_dict.get("rg", np.nan)
 
-        cro_residues = design.score_dict.get("cro_residues", "")
-        if cro_residues == "":
-            cro_residues = None
-        else:
-            cro_residues = cro_residues.split(",")
-            cro_residues = list(map(lambda r: int(r), cro_residues))
-        design.reward["cro_residues"] = cro_residues
-
     designs = get_rmsd_to_init(designs=designs, ref_pdb=env.ref_pdb)
-    for design in designs:
-        design.is_pareto_efficient = True
+    designs = get_pareto_front(
+        designs=designs,
+        fields=[
+            "total_score",
+            "cav_vol",
+            "rg",
+            "rmsd_to_init",
+        ],
+        minimize=[True, True, True, True],
+    )
     return designs
 
 

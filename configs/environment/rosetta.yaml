@@ -6,7 +6,7 @@ config:
   exec_path: ${oc.env:AGR_ROSETTASCRIPTS_CXX11THREAD_BIN,rosetta_scripts.cxx11thread.linuxgccrelease}
   mpi_exec_path: ${oc.env:AGR_ROSETTASCRIPTS_MPI_BIN,rosetta_scripts.cxx11threadmpiserialization.linuxgccrelease}
 
-  timeout: 1200
+  timeout: 3600
 
   system_prompt: |
     Your name is Agent Rosetta. You are an expert RosettaScripts coding agent that supports scientists in biomolecular design tasks:

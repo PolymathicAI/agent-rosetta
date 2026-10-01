@@ -198,6 +198,7 @@ def run_cmd(
             stderr_path=stderr_path,
             timeout=env.config.timeout,
             max_retries=5,
+            delay=10,
         )
     else:
         raise ValueError(f"Invalid cmd_mode '{cmd_args.cmd_mode}'.")

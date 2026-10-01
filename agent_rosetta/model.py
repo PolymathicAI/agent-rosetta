@@ -17,6 +17,8 @@ if TYPE_CHECKING:
 
     from .history import History
 
+litellm.suppress_debug_info = True
+
 
 @dataclass(frozen=True)
 class ModelConfig:
